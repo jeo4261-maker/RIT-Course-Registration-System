@@ -1,0 +1,760 @@
+import React, { useState, useMemo } from 'react';
+import { Calendar, BookOpen, Clock, Award, X, ChevronDown, ChevronRight } from 'lucide-react';
+
+const RITCourseRegistration = () => {
+  const courses = {
+  "courses": [
+    {
+      "id": "ACCT-110",
+      "courseCode": "ACCT-110",
+      "title": "Financial Accounting",
+      "department": "Accounting",
+      "credits": 3,
+      "description": "An introduction to financial reporting for corporations. Topics include the accounting cycle, financial statements, revenue recognition, and analysis of financial performance.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring"],
+      "level": 100
+    },
+    {
+      "id": "ACCT-210",
+      "courseCode": "ACCT-210",
+      "title": "Managerial Accounting",
+      "department": "Accounting",
+      "credits": 3,
+      "description": "Introduction to the use of accounting information by managers. Explores cost accounting, budgeting, performance evaluation, and strategic decision making.",
+      "prerequisites": ["ACCT-110"],
+      "terms": ["Fall", "Spring"],
+      "level": 200
+    },
+    {
+      "id": "ACCT-305",
+      "courseCode": "ACCT-305",
+      "title": "The Accounting Profession",
+      "department": "Accounting",
+      "credits": 3,
+      "description": "Examination of the accounting profession including ethics, professional standards, career paths, and contemporary issues facing accountants.",
+      "prerequisites": ["ACCT-110"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "ACCT-360",
+      "courseCode": "ACCT-360",
+      "title": "Intermediate Financial Accounting I",
+      "department": "Accounting",
+      "credits": 3,
+      "description": "In-depth study of financial reporting standards, including revenue recognition, cash and receivables, inventory, and property, plant, and equipment.",
+      "prerequisites": ["ACCT-210"],
+      "terms": ["Fall"],
+      "level": 300
+    },
+    {
+      "id": "ACCT-365",
+      "courseCode": "ACCT-365",
+      "title": "Intermediate Financial Accounting II",
+      "department": "Accounting",
+      "credits": 3,
+      "description": "Continuation of ACCT-360 covering long-term liabilities, stockholders' equity, earnings per share, and statement of cash flows.",
+      "prerequisites": ["ACCT-360"],
+      "terms": ["Spring"],
+      "level": 300
+    },
+    {
+      "id": "ACCT-420",
+      "courseCode": "ACCT-420",
+      "title": "Personal and Small Business Taxation",
+      "department": "Accounting",
+      "credits": 3,
+      "description": "Federal income taxation of individuals and small businesses including sole proprietorships, partnerships, and S corporations.",
+      "prerequisites": ["ACCT-210"],
+      "terms": ["Fall", "Spring"],
+      "level": 400
+    },
+    {
+      "id": "ACCT-430",
+      "courseCode": "ACCT-430",
+      "title": "Cost Accounting",
+      "department": "Accounting",
+      "credits": 3,
+      "description": "Advanced study of cost systems, cost behavior analysis, budgeting, variance analysis, and performance measurement.",
+      "prerequisites": ["ACCT-210"],
+      "terms": ["Fall", "Spring"],
+      "level": 400
+    },
+    {
+      "id": "MGMT-101",
+      "courseCode": "MGMT-101",
+      "title": "Business 1: Introduction to Business",
+      "department": "Management",
+      "credits": 3,
+      "description": "Introduction to business communication, planning, and analysis. Develops foundational skills for business professionals.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring"],
+      "level": 100
+    },
+    {
+      "id": "MGMT-102",
+      "courseCode": "MGMT-102",
+      "title": "Business 2: Business Planning and Professional Development",
+      "department": "Management",
+      "credits": 3,
+      "description": "Continuation of MGMT-101 focusing on business planning, professional development, and career readiness.",
+      "prerequisites": ["MGMT-101"],
+      "terms": ["Fall", "Spring"],
+      "level": 100
+    },
+    {
+      "id": "MGMT-215",
+      "courseCode": "MGMT-215",
+      "title": "Organizational Behavior",
+      "department": "Management",
+      "credits": 3,
+      "description": "Study of individual and group behavior in organizations. Topics include motivation, leadership, team dynamics, and organizational culture.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring", "Summer"],
+      "level": 200
+    },
+    {
+      "id": "MGMT-360",
+      "courseCode": "MGMT-360",
+      "title": "Digital Entrepreneurship",
+      "department": "Management",
+      "credits": 3,
+      "description": "Explores entrepreneurship in the digital age, including business model innovation, lean startup methodologies, and digital venture creation.",
+      "prerequisites": ["MGMT-101"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "MGMT-560",
+      "courseCode": "MGMT-560",
+      "title": "Strategic Management",
+      "department": "Management",
+      "credits": 3,
+      "description": "Capstone course integrating functional areas of business. Develops skills in strategic analysis, planning, and implementation.",
+      "prerequisites": ["MGMT-215", "MKTG-230", "FINC-220"],
+      "terms": ["Fall", "Spring"],
+      "level": 500
+    },
+    {
+      "id": "MGIS-130",
+      "courseCode": "MGIS-130",
+      "title": "Information Systems & Technology",
+      "department": "Management Information Systems",
+      "credits": 3,
+      "description": "Introduction to management information systems including systems thinking, data management, business processes, and the role of technology in organizations.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring"],
+      "level": 100
+    },
+    {
+      "id": "MGIS-230",
+      "courseCode": "MGIS-230",
+      "title": "Database Design and Applications",
+      "department": "Management Information Systems",
+      "credits": 3,
+      "description": "Introduction to database concepts, design, and SQL. Students learn to design, implement, and query relational databases.",
+      "prerequisites": ["MGIS-130"],
+      "terms": ["Fall", "Spring"],
+      "level": 200
+    },
+    {
+      "id": "MGIS-340",
+      "courseCode": "MGIS-340",
+      "title": "Emerging Business Technologies",
+      "department": "Management Information Systems",
+      "credits": 3,
+      "description": "Examination of cutting-edge technologies and their business applications including AI, blockchain, IoT, and cloud computing.",
+      "prerequisites": ["MGIS-130"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "MGIS-360",
+      "courseCode": "MGIS-360",
+      "title": "Building a Web Business",
+      "department": "Management Information Systems",
+      "credits": 3,
+      "description": "Development of e-commerce and web-based business applications. Covers web technologies, online business models, and digital marketing.",
+      "prerequisites": ["MGIS-130"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "MGIS-425",
+      "courseCode": "MGIS-425",
+      "title": "Systems Analysis and Design",
+      "department": "Management Information Systems",
+      "credits": 3,
+      "description": "Methods for analyzing business requirements and designing information systems. Covers SDLC, agile methodologies, and system modeling.",
+      "prerequisites": ["MGIS-230"],
+      "terms": ["Fall", "Spring"],
+      "level": 400
+    },
+    {
+      "id": "MKTG-230",
+      "courseCode": "MKTG-230",
+      "title": "Principles of Marketing",
+      "department": "Marketing",
+      "credits": 3,
+      "description": "Introduction to marketing concepts including market research, consumer behavior, segmentation, targeting, positioning, and the marketing mix.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring", "Summer"],
+      "level": 200
+    },
+    {
+      "id": "MKTG-310",
+      "courseCode": "MKTG-310",
+      "title": "Marketing Research",
+      "department": "Marketing",
+      "credits": 3,
+      "description": "Methods for gathering and analyzing marketing data. Covers research design, sampling, data collection, and statistical analysis.",
+      "prerequisites": ["MKTG-230", "STAT-145"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "MKTG-330",
+      "courseCode": "MKTG-330",
+      "title": "Global Marketing",
+      "department": "Marketing",
+      "credits": 3,
+      "description": "Marketing strategies for international markets. Covers cultural differences, global market entry, and international marketing mix decisions.",
+      "prerequisites": ["MKTG-230"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "MKTG-360",
+      "courseCode": "MKTG-360",
+      "title": "Professional Selling",
+      "department": "Marketing",
+      "credits": 3,
+      "description": "Development of consultative selling skills including prospecting, needs analysis, presentation techniques, and relationship management.",
+      "prerequisites": ["MKTG-230"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "MKTG-370",
+      "courseCode": "MKTG-370",
+      "title": "Advertising & Promotion Management",
+      "department": "Marketing",
+      "credits": 3,
+      "description": "Integrated marketing communications including advertising, public relations, sales promotion, and direct marketing strategies.",
+      "prerequisites": ["MKTG-230"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "MKTG-410",
+      "courseCode": "MKTG-410",
+      "title": "Search Engine Marketing & Analytics",
+      "department": "Marketing",
+      "credits": 3,
+      "description": "Digital marketing strategies focusing on SEO, SEM, web analytics, and data-driven marketing decision making.",
+      "prerequisites": ["MKTG-230"],
+      "terms": ["Fall", "Spring"],
+      "level": 400
+    },
+    {
+      "id": "MKTG-430",
+      "courseCode": "MKTG-430",
+      "title": "Social Media Marketing",
+      "department": "Marketing",
+      "credits": 3,
+      "description": "Strategic use of social media platforms for marketing purposes. Covers content strategy, community management, and social media analytics.",
+      "prerequisites": ["MKTG-230"],
+      "terms": ["Fall", "Spring"],
+      "level": 400
+    },
+    {
+      "id": "MKTG-489",
+      "courseCode": "MKTG-489",
+      "title": "Seminar in Marketing",
+      "department": "Marketing",
+      "credits": 3,
+      "description": "Capstone course integrating marketing concepts through case analysis, strategic planning, and applied projects.",
+      "prerequisites": ["MKTG-310", "MKTG-330"],
+      "terms": ["Fall", "Spring"],
+      "level": 400
+    },
+    {
+      "id": "FINC-220",
+      "courseCode": "FINC-220",
+      "title": "Corporate Finance",
+      "department": "Finance",
+      "credits": 3,
+      "description": "Introduction to financial management including time value of money, capital budgeting, risk and return, and capital structure decisions.",
+      "prerequisites": ["ACCT-110"],
+      "terms": ["Fall", "Spring"],
+      "level": 200
+    },
+    {
+      "id": "FINC-320",
+      "courseCode": "FINC-320",
+      "title": "Professional Financial Management",
+      "department": "Finance",
+      "credits": 3,
+      "description": "Advanced financial management topics including working capital management, dividend policy, and corporate restructuring.",
+      "prerequisites": ["FINC-220"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "FINC-352",
+      "courseCode": "FINC-352",
+      "title": "Financial Management II",
+      "department": "Finance",
+      "credits": 3,
+      "description": "Advanced corporate finance topics including mergers and acquisitions, international finance, and derivatives.",
+      "prerequisites": ["FINC-220"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "FINC-362",
+      "courseCode": "FINC-362",
+      "title": "Intermediate Investments",
+      "department": "Finance",
+      "credits": 3,
+      "description": "Analysis of investment vehicles including stocks, bonds, and portfolios. Covers valuation, risk management, and portfolio theory.",
+      "prerequisites": ["FINC-220"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "FINC-460",
+      "courseCode": "FINC-460",
+      "title": "Financial Analysis and Modeling",
+      "department": "Finance",
+      "credits": 3,
+      "description": "Development of financial models using Excel for valuation, forecasting, and decision analysis. Emphasis on practical applications.",
+      "prerequisites": ["FINC-320"],
+      "terms": ["Fall", "Spring"],
+      "level": 400
+    },
+    {
+      "id": "HSPT-210",
+      "courseCode": "HSPT-210",
+      "title": "Introduction to Hospitality Management",
+      "department": "Hospitality & Tourism",
+      "credits": 3,
+      "description": "Overview of the hospitality industry including lodging, food service, tourism, and event management sectors.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring"],
+      "level": 200
+    },
+    {
+      "id": "HSPT-320",
+      "courseCode": "HSPT-320",
+      "title": "Hotel Operations Management",
+      "department": "Hospitality & Tourism",
+      "credits": 3,
+      "description": "Management of hotel operations including front office, housekeeping, food and beverage, and property management systems.",
+      "prerequisites": ["HSPT-210"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "HSPT-340",
+      "courseCode": "HSPT-340",
+      "title": "Event Planning and Management",
+      "department": "Hospitality & Tourism",
+      "credits": 3,
+      "description": "Planning and execution of meetings, conferences, and special events. Covers budgeting, logistics, and vendor management.",
+      "prerequisites": ["HSPT-210"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "STAT-145",
+      "courseCode": "STAT-145",
+      "title": "Introduction to Statistics I",
+      "department": "Statistics",
+      "credits": 3,
+      "description": "Descriptive statistics, probability, sampling distributions, confidence intervals, and hypothesis testing.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring", "Summer"],
+      "level": 100
+    },
+    {
+      "id": "STAT-146",
+      "courseCode": "STAT-146",
+      "title": "Introduction to Statistics II",
+      "department": "Statistics",
+      "credits": 3,
+      "description": "Continuation of STAT-145 covering ANOVA, regression, chi-square tests, and nonparametric methods.",
+      "prerequisites": ["STAT-145"],
+      "terms": ["Fall", "Spring"],
+      "level": 100
+    },
+    {
+      "id": "DECS-310",
+      "courseCode": "DECS-310",
+      "title": "Operations Management",
+      "department": "Decision Sciences",
+      "credits": 3,
+      "description": "Management of operations and supply chains including process analysis, quality management, inventory control, and project management.",
+      "prerequisites": ["STAT-145"],
+      "terms": ["Fall", "Spring"],
+      "level": 300
+    },
+    {
+      "id": "BANA-255",
+      "courseCode": "BANA-255",
+      "title": "Data Literacy, Analytics, and Decision Making",
+      "department": "Business Analytics",
+      "credits": 3,
+      "description": "Introduction to data analysis for business decisions. Covers data visualization, descriptive analytics, and business intelligence tools.",
+      "prerequisites": ["STAT-145"],
+      "terms": ["Fall", "Spring"],
+      "level": 200
+    },
+    {
+      "id": "INTB-225",
+      "courseCode": "INTB-225",
+      "title": "Global Business Environment",
+      "department": "International Business",
+      "credits": 3,
+      "description": "Analysis of the global business environment including economic, political, cultural, and legal factors affecting international operations.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring"],
+      "level": 200
+    },
+    {
+      "id": "BLEG-250",
+      "courseCode": "BLEG-250",
+      "title": "Law, Business, and Society",
+      "department": "Business Law",
+      "credits": 3,
+      "description": "Legal and regulatory environment of business including contracts, torts, employment law, and business ethics.",
+      "prerequisites": [],
+      "terms": ["Fall", "Spring"],
+      "level": 200
+    }
+  ]
+};
+
+  const [selectedDepartment, setSelectedDepartment] = useState('All');
+  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [expandedCourse, setExpandedCourse] = useState(null);
+  const [currentView, setCurrentView] = useState('selection'); // 'selection', 'schedule', 'compare'
+  const [schedules, setSchedules] = useState([
+    { id: 1, name: 'Schedule 1 🐯', courses: [] },
+    { id: 2, name: 'Schedule 2 🐯', courses: [] },
+    { id: 3, name: 'Schedule 3 🐯', courses: [] }
+  ]);
+  const [activeSchedule, setActiveSchedule] = useState(0);
+
+  const departments = useMemo(() => {
+    const depts = [...new Set(courses.courses.map(c => c.department))];
+    return ['All', ...depts.sort()];
+  }, []);
+
+  const filteredCourses = useMemo(() => {
+    if (selectedDepartment === 'All') return courses.courses;
+    return courses.courses.filter(c => c.department === selectedDepartment);
+  }, [selectedDepartment]);
+
+  const totalCredits = useMemo(() => {
+    return selectedCourses.reduce((sum, course) => sum + course.credits, 0);
+  }, [selectedCourses]);
+
+  const handleCourseToggle = (course) => {
+    const isSelected = selectedCourses.find(c => c.id === course.id);
+    if (isSelected) {
+      setSelectedCourses(selectedCourses.filter(c => c.id !== course.id));
+    } else {
+      const newTotal = totalCredits + course.credits;
+      if (newTotal <= 18) {
+        setSelectedCourses([...selectedCourses, course]);
+      } else {
+        alert('Cannot exceed 18 credit hours! 🐯');
+      }
+    }
+  };
+
+  const addToSchedule = () => {
+    if (selectedCourses.length === 0) {
+      alert('Please select at least one course! 🐯');
+      return;
+    }
+    const newSchedules = [...schedules];
+    newSchedules[activeSchedule].courses = [...selectedCourses];
+    setSchedules(newSchedules);
+    setCurrentView('schedule');
+  };
+
+  const CalendarView = ({ scheduleCourses }) => {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const scheduleCredits = scheduleCourses.reduce((sum, c) => sum + c.credits, 0);
+    
+    return (
+      <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-orange-500">
+        <div className="grid grid-cols-5 gap-2 mb-4">
+          {days.map(day => (
+            <div key={day} className="font-bold text-center py-2 bg-orange-500 text-white rounded">
+              {day}
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-5 gap-2 min-h-96">
+          {days.map((day, idx) => (
+            <div key={day} className="border-2 border-gray-200 rounded p-2 bg-gray-50">
+              {scheduleCourses.map((course, courseIdx) => {
+                if ((courseIdx + idx) % 2 === 0) {
+                  return (
+                    <div 
+                      key={course.id}
+                      className="bg-orange-500 text-white p-2 rounded mb-2 text-xs"
+                    >
+                      <div className="font-bold">{course.courseCode}</div>
+                      <div className="text-xs truncate">{course.title}</div>
+                      <div className="text-xs">{course.credits} cr</div>
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 text-right">
+          <div className="inline-block bg-black text-white px-4 py-2 rounded-lg">
+            <span className="font-bold">Total Credits: {scheduleCredits} 🐯</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="bg-orange-500 text-white p-6 rounded-lg shadow-lg mb-6">
+          <h1 className="text-4xl font-bold flex items-center gap-3">
+            <span>🐯</span>
+            RIT Course Registration
+            <span>🐯</span>
+          </h1>
+          <p className="text-orange-100 mt-2">Select up to 18 credit hours for your semester</p>
+        </div>
+
+        {currentView === 'selection' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Course List */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-orange-500">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-bold text-black flex items-center gap-2">
+                    <BookOpen className="text-orange-500" />
+                    Available Courses
+                  </h2>
+                  <select 
+                    value={selectedDepartment}
+                    onChange={(e) => setSelectedDepartment(e.target.value)}
+                    className="border-2 border-orange-500 rounded-lg px-4 py-2 bg-white text-black"
+                  >
+                    {departments.map(dept => (
+                      <option key={dept} value={dept}>{dept}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-3 max-h-96 overflow-y-auto">
+                  {filteredCourses.map(course => {
+                    const isSelected = selectedCourses.find(c => c.id === course.id);
+                    const isExpanded = expandedCourse === course.id;
+                    
+                    return (
+                      <div key={course.id} className="border-2 border-gray-200 rounded-lg p-4 hover:border-orange-500 transition-all">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <button
+                              onClick={() => setExpandedCourse(isExpanded ? null : course.id)}
+                              className="text-left hover:text-orange-500 transition-colors"
+                            >
+                              <div className="flex items-center gap-2">
+                                {isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                                <span className="font-bold text-lg text-black">{course.courseCode}</span>
+                                <span className="text-orange-500">-</span>
+                                <span className="font-semibold text-black">{course.title}</span>
+                              </div>
+                            </button>
+                            <div className="mt-2 flex items-center gap-4 text-sm text-gray-600">
+                              <span className="flex items-center gap-1">
+                                <Award size={16} className="text-orange-500" />
+                                {course.credits} Credits
+                              </span>
+                              <span className="text-gray-500">{course.department}</span>
+                            </div>
+                            
+                            {isExpanded && (
+                              <div className="mt-3 p-3 bg-orange-50 rounded border border-orange-200">
+                                <p className="text-sm text-gray-700 mb-2">{course.description}</p>
+                                <div className="text-sm">
+                                  <span className="font-semibold text-black">Prerequisites: </span>
+                                  <span className="text-gray-700">
+                                    {course.prerequisites.length > 0 ? course.prerequisites.join(', ') : 'None'}
+                                  </span>
+                                </div>
+                                <div className="text-sm mt-1">
+                                  <span className="font-semibold text-black">Terms: </span>
+                                  <span className="text-gray-700">{course.terms.join(', ')}</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          
+                          <button
+                            onClick={() => handleCourseToggle(course)}
+                            className={`ml-4 px-4 py-2 rounded-lg font-semibold transition-all ${
+                              isSelected 
+                                ? 'bg-orange-500 text-white hover:bg-orange-600' 
+                                : 'bg-gray-200 text-black hover:bg-gray-300'
+                            }`}
+                          >
+                            {isSelected ? '✓ Selected' : 'Select'}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Selected Courses */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-orange-500 sticky top-6">
+                <h2 className="text-2xl font-bold text-black mb-4 flex items-center gap-2">
+                  <Calendar className="text-orange-500" />
+                  Selected Courses
+                </h2>
+                
+                <div className="mb-4 p-3 bg-orange-500 text-white rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold">Total Credits:</span>
+                    <span className="text-2xl font-bold">{totalCredits}/18 🐯</span>
+                  </div>
+                  <div className="mt-2 bg-white rounded-full h-2">
+                    <div 
+                      className="bg-black h-2 rounded-full transition-all"
+                      style={{ width: `${(totalCredits/18) * 100}%` }}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2 mb-4 max-h-64 overflow-y-auto">
+                  {selectedCourses.length === 0 ? (
+                    <p className="text-gray-500 text-center py-4">No courses selected yet 🐯</p>
+                  ) : (
+                    selectedCourses.map(course => (
+                      <div key={course.id} className="flex justify-between items-center bg-orange-50 p-3 rounded border border-orange-200">
+                        <div>
+                          <div className="font-semibold text-black">{course.courseCode}</div>
+                          <div className="text-sm text-gray-600">{course.credits} credits</div>
+                        </div>
+                        <button
+                          onClick={() => handleCourseToggle(course)}
+                          className="text-orange-500 hover:text-orange-700"
+                        >
+                          <X size={20} />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <button
+                  onClick={addToSchedule}
+                  disabled={selectedCourses.length === 0}
+                  className="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed"
+                >
+                  Add to My Schedule 🐯
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {currentView === 'schedule' && (
+          <div>
+            <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-orange-500 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-black flex items-center gap-2">
+                  <Calendar className="text-orange-500" />
+                  My Schedules
+                </h2>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setCurrentView('compare')}
+                    className="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-600"
+                  >
+                    Compare All 🐯
+                  </button>
+                  <button
+                    onClick={() => setCurrentView('selection')}
+                    className="bg-black text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800"
+                  >
+                    Back to Selection
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex gap-2 mb-6">
+                {schedules.map((schedule, idx) => (
+                  <button
+                    key={schedule.id}
+                    onClick={() => setActiveSchedule(idx)}
+                    className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                      activeSchedule === idx
+                        ? 'bg-orange-500 text-white'
+                        : 'bg-gray-200 text-black hover:bg-gray-300'
+                    }`}
+                  >
+                    {schedule.name}
+                  </button>
+                ))}
+              </div>
+
+              <CalendarView scheduleCourses={schedules[activeSchedule].courses} />
+            </div>
+          </div>
+        )}
+
+        {currentView === 'compare' && (
+          <div>
+            <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-orange-500 mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-black flex items-center gap-2">
+                  <Calendar className="text-orange-500" />
+                  Compare All Schedules 🐯
+                </h2>
+                <button
+                  onClick={() => setCurrentView('schedule')}
+                  className="bg-black text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800"
+                >
+                  Back to Schedules
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {schedules.map((schedule, idx) => (
+                  <div key={schedule.id}>
+                    <h3 className="text-xl font-bold text-center mb-3 text-black">{schedule.name}</h3>
+                    <CalendarView scheduleCourses={schedule.courses} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default RITCourseRegistration;
